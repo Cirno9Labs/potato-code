@@ -1,0 +1,16 @@
+# .gitignore 範例（加在專案根目錄）
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.ipynb_checkpoints/
+*.pth
+*.h5
+*.ckpt
+data/
+images/
+dataset/
+runs/
+logs/
+*.zip
+*.tar.gz
