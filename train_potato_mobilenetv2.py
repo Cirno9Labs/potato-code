@@ -8,7 +8,7 @@ import torch.nn as nn
 import torch.optim as optim
 from torchvision import datasets, transforms, models
 from torch.utils.data import DataLoader
-
+import csv
 # --- 根据你的 tree 结果设置路径 ---
 DATA_DIR = r'E:\Source\potato\dataset'
 TRAIN_DIR = os.path.join(DATA_DIR, 'Training')
@@ -20,6 +20,18 @@ EPOCHS = 15
 LR = 0.0003
 
 def main():
+    # 创建目录
+    os.makedirs("logs", exist_ok=True)
+    os.makedirs("models", exist_ok=True)
+
+    # CSV日志
+    log_path = "logs/baseline_log.csv"
+    log_file = open(log_path, "w", newline="")
+    csv_writer = csv.writer(log_file)
+    csv_writer.writerow(["epoch", "phase", "loss", "acc"])
+
+    # Best model记录
+    best_acc = 0.0
     # 2. 图像预处理
     data_transforms = {
         'Training': transforms.Compose([
@@ -95,10 +107,16 @@ def main():
             epoch_loss = running_loss / len(image_datasets[phase])
             epoch_acc = running_corrects.double() / len(image_datasets[phase])
             print(f'Epoch {epoch + 1}/{EPOCHS} [{phase}] Loss: {epoch_loss:.4f} Acc: {epoch_acc:.4f}')
+            csv_writer.writerow([epoch + 1, phase, epoch_loss, epoch_acc.item()])
+            if phase == 'val' and epoch_acc > best_acc:
+                best_acc = epoch_acc
+                torch.save(model.state_dict(), "models/baseline_best.pth")
+                print(f"⭐ Best model updated! Acc={best_acc:.4f}")
 
-    # 保存训练好的权重
-    torch.save(model.state_dict(), 'potato_mobilenetv2_baseline.pth')
-    print("\n✅ 训练成功结束！权重已保存至当前目录下的 potato_mobilenetv2_baseline.pth")
+    # 保存训练好的最佳权重
+    torch.save(model.state_dict(), 'models/potato_mobilenetv2_baseline_last.pth')
+    log_file.close()
+    print("\n✅ 训练成功结束！最佳权重已保存至models/potato_mobilenetv2_baseline_last.pth")
 
 if __name__ == '__main__':
     main()

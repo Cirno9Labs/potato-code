@@ -10,7 +10,7 @@ import torch.nn.functional as F
 import torch.optim as optim
 from torchvision import datasets, transforms, models
 from torch.utils.data import DataLoader
-
+import csv
 
 # --- 1. 定义 ECA 注意力模块 ---
 class ECAModule(nn.Module):
@@ -72,6 +72,14 @@ class ImprovedMobileNetV2(nn.Module):
 
 # --- 3. 训练配置与主循环 ---
 def main():
+    # CSV日志
+    log_path = "logs/eca_log.csv"
+    log_file = open(log_path, "w", newline="")
+    csv_writer = csv.writer(log_file)
+    csv_writer.writerow(["epoch", "phase", "loss", "acc"])
+
+    # Best model记录
+    best_acc = 0.0
     # 数据路径
     DATA_DIR = r'E:\Source\potato\dataset'
     TRAIN_DIR = os.path.join(DATA_DIR, 'Training')
@@ -150,11 +158,17 @@ def main():
             epoch_loss = running_loss / len(image_datasets[phase])
             epoch_acc = running_corrects.double() / len(image_datasets[phase])
             print(f'Epoch {epoch + 1}/{EPOCHS} [{phase}] Loss: {epoch_loss:.4f} Acc: {epoch_acc:.4f}')
+            csv_writer.writerow([epoch + 1, phase, epoch_loss, epoch_acc.item()])
+            if phase == 'val' and epoch_acc > best_acc:
+                best_acc = epoch_acc
+                torch.save(model.state_dict(), "models/baseline_best.pth")
+                print(f"⭐ Best model updated! Acc={best_acc:.4f}")
 
-    # 保存改进后的权重
-    torch.save(model.state_dict(), 'improved_potato_mobilenetv2_eca.pth')
-    print("\n✅ 改进模型训练完成，权重已保存至当前目录下的 improved_potato_mobilenetv2_eca.pth")
 
+    # 保存训练好的最佳权重
+    torch.save(model.state_dict(), 'models/eca_best.pth')
+    log_file.close()
+    print("\n✅ 训练成功结束！最佳权重已保存至models/eca_best.pth")
 
 if __name__ == '__main__':
     main()
