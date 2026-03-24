@@ -8,16 +8,20 @@ os.makedirs("figures", exist_ok=True)
 baseline = pd.read_csv("logs/baseline_log.csv")
 eca = pd.read_csv("logs/eca_log.csv")
 se = pd.read_csv("logs/se_log.csv")
+baseline_no_aug = pd.read_csv("logs/baseline_no_aug_log.csv")
+
 
 # 训练集
 train_base = baseline[baseline.phase=="train"]
-train_eca = eca[eca.phase=="train"]
-train_se = se[se.phase=="train"]
+train_base_no_aug = baseline_no_aug[baseline_no_aug.phase=="train"]
+# train_eca = eca[eca.phase=="train"]
+# train_se = se[se.phase=="train"]
 
 # 验证集
 val_base = baseline[baseline.phase=="val"]
-val_eca = eca[eca.phase=="val"]
-val_se = se[se.phase=="val"]
+val_base_no_aug = baseline_no_aug[baseline_no_aug.phase=="val"]
+# val_eca = eca[eca.phase=="val"]
+# val_se = se[se.phase=="val"]
 
 
 # ===============================
@@ -26,8 +30,9 @@ val_se = se[se.phase=="val"]
 plt.figure(figsize=(6,5), dpi=300)
 
 plt.plot(train_base.epoch, train_base.loss, label="Baseline")
-plt.plot(train_eca.epoch, train_eca.loss, label="ECA")
-plt.plot(train_se.epoch, train_se.loss, label="SE")
+plt.plot(train_base_no_aug.epoch, train_base_no_aug.loss, label="Baseline_no_aug")
+# plt.plot(train_eca.epoch, train_eca.loss, label="ECA")
+# plt.plot(train_se.epoch, train_se.loss, label="SE")
 
 plt.xlabel("Epoch")
 plt.ylabel("Loss")
@@ -48,8 +53,10 @@ plt.close()
 plt.figure(figsize=(6,5), dpi=300)
 
 plt.plot(val_base.epoch, val_base.loss, label="Baseline")
-plt.plot(val_eca.epoch, val_eca.loss, label="ECA")
-plt.plot(val_se.epoch, val_se.loss, label="SE")
+plt.plot(val_base_no_aug.epoch, val_base_no_aug.loss, label="Baseline_no_aug")
+
+# plt.plot(val_eca.epoch, val_eca.loss, label="ECA")
+# plt.plot(val_se.epoch, val_se.loss, label="SE")
 
 plt.xlabel("Epoch")
 plt.ylabel("Loss")
@@ -70,8 +77,9 @@ plt.close()
 plt.figure(figsize=(6,5), dpi=300)
 
 plt.plot(val_base.epoch, val_base.acc, label="Baseline")
-plt.plot(val_eca.epoch, val_eca.acc, label="ECA")
-plt.plot(val_se.epoch, val_se.acc, label="SE")
+plt.plot(val_base_no_aug.epoch, val_base_no_aug.acc, label="Baseline_no_aug")
+# plt.plot(val_eca.epoch, val_eca.acc, label="ECA")
+# plt.plot(val_se.epoch, val_se.acc, label="SE")
 
 plt.xlabel("Epoch")
 plt.ylabel("Accuracy")
