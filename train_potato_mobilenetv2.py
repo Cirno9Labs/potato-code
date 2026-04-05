@@ -230,7 +230,7 @@ if __name__ == '__main__':
 
     # --- 超参数 ---
     BATCH_SIZE = 32
-    EPOCHS = 15
-    LR = 0.0003
+    EPOCHS = 8
+    LR = 0.01
 
     main()
