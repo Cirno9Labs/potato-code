@@ -63,7 +63,7 @@ class ImprovedMobileNetV2(nn.Module):
 def generate_confusion_matrix():
     # 路径配置
     BASE_DIR = r"E:\Source\potato"
-    MODEL_PATH = os.path.join(BASE_DIR, "models", "eca_best.pth")
+    MODEL_PATH = os.path.join(BASE_DIR, "models", "best_mobilenetv2_eca.pth")
     VAL_DATA_DIR = os.path.join(BASE_DIR, "dataset", "Validation")
 
     if not os.path.exists(MODEL_PATH):

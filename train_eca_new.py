@@ -84,7 +84,7 @@ def train_final_model():
     LR = 0.00044164553065255885
     BATCH_SIZE = 32
     WEIGHT_DECAY = 3.643526297879779e-05
-    EPOCHS = 30  # 最终训练建议跑 30-50 个 Epoch，确保充分收敛
+    EPOCHS = 16  # 最终训练建议跑 30-50 个 Epoch，确保充分收敛
 
     os.makedirs("models", exist_ok=True)
     best_model_path = os.path.join("models", "best_mobilenetv2_eca.pth")

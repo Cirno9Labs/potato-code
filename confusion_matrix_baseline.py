@@ -31,7 +31,7 @@ num_ftrs = model.classifier[1].in_features
 model.classifier[1] = torch.nn.Linear(num_ftrs, 3)
 
 # 載入權重（建議加上 weights_only=True 避免警告）
-model_path = "models/potato_mobilenetv2_baseline_last.pth"
+model_path = "models/baseline_best.pth"
 model.load_state_dict(torch.load(model_path, map_location=device, weights_only=True))
 
 model = model.to(device)
